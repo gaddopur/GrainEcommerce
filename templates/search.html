@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+  <table class="table">
+    <thead>
+      <th scope="col">Images</th>
+      <th scope="col">Products</th>
+      <th scope="col">Description</th>
+    </thead>
+    <tbody>
+    {% for product in products %}
+    <tr>
+      <td >
+        <div class="thumbnail">
+          {% if product.productimage_set.all %}
+          {% for pimage in product.productimage_set.all %}
+          <div class="background-img-thumb" style="
+            background-image: url('{{pimage.image.url}}')">
+          </div>
+          {% endfor %}
+
+          {% else %}
+          <div class="background-img-thumb">
+          </div>
+          {% endif %}
+        </div>
+      </td>
+      <td>
+        <a href="{% url 'products:product_detail' slug=product.slug%}">
+          {{product.title}}
+        </a>
+      </td>
+      <td><p>{{product.description|truncatechars:15}}</p></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

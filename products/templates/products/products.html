@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block head_title %}
+Welcome to Products
+{% endblock %}
+
+{% block content %}
+<ul>
+  {% for Product in products %}
+  <li>{{Product}}{{Product.price}}</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head_title %}
+Welcome to
+{% endblock %}
+{% block content%}
+<!-- <main role="main" class="container">
+  <div class="jumbotron">
+    <h1>{{username}}</h1>
+    <p class="lead">This example is a quick exercise to illustrate how the top-aligned navbar works. As you scroll, this navbar remains in its original position and moves with the rest of the page.</p>
+    <a class="btn btn-lg btn-primary" href="/docs/4.4/components/navbar/" role="button">View navbar docs &raquo;</a>
+  </div>
+</main> -->
+
+<div class="container">
+  <div class="row">
+    {% for product in products %}
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="thumbnail">
+        {% if product.productimage_set.all %}
+        {% for pimage in product.productimage_set.all %}
+        <div class="background-img-thumb" style="
+          background-image: url('{{pimage.image.url}}');">
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="background-img-thumb">
+        </div>
+        {% endif %}
+        <div class="caption">
+          <h3>{{product.title}}</h3>
+          <p>{{product.description|truncatechars:15}}</p>
+          <p align="center"><a href="{{product.get_absolute_url}}" class="btn btn-primary btn-block">Product Detail</a></p>
+        </div>
+      </div>
+      <br/>
+    </div>
+    {% cycle "" "" "</div><br/><hr><div class='row'>" %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock%}

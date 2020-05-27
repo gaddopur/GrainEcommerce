@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head_title %}
+Welcome to Products {{product.title}}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-4">
+      {% if product.productimage_set.all %}
+      {% for pimage in product.productimage_set.all %}
+      {% if pimage.featured %}
+      <img class="img-thumbnail" src="{{pimage.image.url}}" alt="item-image">
+      {% else %}
+      <img class="img-thumbnail" src={% static 'img/default.png'%} alt="item-image">
+      {% endif %}
+      {% endfor %}
+      {% else %}
+      <img class="img-thumbnail" src={% static 'img/default.png'%} alt="item-image">
+      {% endif %}
+      <hr/>
+    </div>
+    <div class="col-sm-12 col-md-8 col-lg-8">
+      <!-- <p class="text-right">Right aligned text on all viewport sizes.</p> -->
+      <div class="row">
+        <div class="col-sm-12 col-md-4">
+          <h3>{{product.title}}</h3>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <form method="post" action="{% url 'carts:add_to_cart' slug=product.slug  %}">
+            {% csrf_token %}
+            <div class="form-group row">
+              <div class="col">
+                <label for="qty"> Product:</label>
+                <input type="number" class="form-control" name="qty" value="1" id="qty">
+              </div>
+            </div>
+            <input class="btn btn-secondary btn-lg btn-block" type="submit" value="Add to Cart">
+            {% if product.productvariation_set.all %}
+            <!-- <h1>Hello</h1> -->
+            {% if product.productvariation_set.sizes %}
+            <!-- <h1>Size</h1> -->
+            <label for="size">Size:</label>
+            <select name="size" id="size" class="btn-lg btn-block">
+              {% for productvariation in product.productvariation_set.sizes %}
+              <option value="{{productvariation.title}}">{{productvariation.title}}</option>
+              {% endfor %}
+            </select>
+            {% endif %}
+            {% if product.productvariation_set.colors %}
+            <label for="color">Color:</label>
+            <select name="color" id="color" class="btn-lg btn-block form-control">
+              {% for productvariation in product.productvariation_set.colors %}
+              <option value="{{productvariation.title}}">{{productvariation.title}}</option>
+              {% endfor %}
+            </select>
+            {% endif %}
+            {% endif %}
+          </form>
+        </div>
+      </div>
+      <br><br>
+      <hr>
+      <h5>Price: {{product.price}}</h5>
+      <hr>
+      <p class="text-justify">{{ product.description|linebreaks }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
